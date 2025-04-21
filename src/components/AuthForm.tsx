@@ -87,57 +87,64 @@ const AuthForm: React.FC<AuthFormProps> = ({showRegister, setShowRegister, onLog
                 </InputAdornment>) : undefined,
             },
         },
+        sx: {
+            '& .MuiInputBase-input': {
+                fontSize: {xs: '0.875rem', sm: '1rem', lg: '1.125rem'},
+            }, '& .MuiInputLabel-root': {
+                fontSize: {xs: '0.875rem', sm: '1rem', lg: '1.125rem'},
+            },
+        },
     });
 
-    return (<div className="flex items-center justify-center min-h-screen w-full mx-auto">
+    return (<div className="flex items-center justify-center min-h-screen w-full mx-auto px-2 sm:px-4">
         <div
-            className={`w-full ${showRegister ? 'max-w-5/12 scale-110' : 'max-w-3/12'} mx-auto`}
+            className={`w-full ${showRegister ? 'max-w-5/12 scale-110' : 'max-w-3/12'} mx-auto overflow-auto`}
         >
-            <div className="bg-white p-8 rounded-lg shadow-2xl w-full mx-auto">
-                <div className="flex justify-center mb-8">
-                    <h1 className="text-3xl font-bold text-center">
+            <div className="bg-white p-4 sm:p-6 md:p-8 rounded-lg shadow-2xl w-full mx-auto">
+                <div className="flex justify-center mb-4 sm:mb-6 md:mb-8">
+                    <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-center">
                         <span className="text-pink-500">CO</span>
                         <span className="text-pink-500">O</span>
                         <span className="text-orange-500">K</span>
                     </h1>
                 </div>
 
-                <h2 className="text-2xl font-semibold mb-6">{showRegister ? 'Register' : 'Login'}</h2>
+                <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold mb-4 sm:mb-6">{showRegister ? 'Register' : 'Login'}</h2>
 
                 {showRegister ? (<div className="w-full max-w-2xl">
-                    <div className="flex flex-col md:flex-row gap-4 mb-4">
-                        <div className="w-full md:w-1/2">
+                    <div className="flex flex-col sm:flex-row gap-4 mb-4">
+                        <div className="w-full sm:w-1/2">
                             <TextField {...textFieldProps('firstName', 'First name')} />
                         </div>
-                        <div className="w-full md:w-1/2">
+                        <div className="w-full sm:w-1/2">
                             <TextField {...textFieldProps('lastName', 'Last name')} />
                         </div>
                     </div>
-                    <div className="flex flex-col md:flex-row gap-4 mb-4">
-                        <div className="w-full md:w-1/2">
+                    <div className="flex flex-col sm:flex-row gap-4 mb-4">
+                        <div className="w-full sm:w-1/2">
                             <TextField {...textFieldProps('email', 'Email', 'email')} />
                         </div>
-                        <div className="w-full md:w-1/2">
+                        <div className="w-full sm:w-1/2">
                             <TextField {...textFieldProps('phoneNumber', 'Phone number', 'tel')} />
                         </div>
                     </div>
-                    <div className="flex flex-col md:flex-row gap-4 mb-4">
-                        <div className="w-full md:w-1/2">
+                    <div className="flex flex-col sm:flex-row gap-4 mb-4">
+                        <div className="w-full sm:w-1/2">
                             <TextField {...textFieldProps('password', 'Password', 'password')} />
                         </div>
-                        <div className="w-full md:w-1/2">
+                        <div className="w-full sm:w-1/2">
                             <TextField {...textFieldProps('confirmPassword', 'Confirm Password', 'password')} />
                         </div>
                     </div>
                     <div className="mt-6 mb-6">
                         <button
                             onClick={handleSubmit}
-                            className="bg-pink-500 text-white py-2 px-6 rounded hover:bg-pink-600 transition"
+                            className="bg-pink-500 text-white py-2 px-4 sm:px-6 rounded hover:bg-pink-600 transition w-full sm:w-auto"
                         >
                             Create Account
                         </button>
                     </div>
-                    <div className="text-center">
+                    <div className="text-center text-sm sm:text-base">
                         <span className="text-gray-600">Already have an account?</span>{' '}
                         <span
                             className="text-pink-500 cursor-pointer hover:underline"
@@ -156,12 +163,12 @@ const AuthForm: React.FC<AuthFormProps> = ({showRegister, setShowRegister, onLog
                     <div className="mt-6 mb-6">
                         <button
                             onClick={handleSubmit}
-                            className="bg-pink-500 text-white py-2 px-6 rounded hover:bg-pink-600 transition"
+                            className="bg-pink-500 text-white py-2 px-4 sm:px-6 rounded hover:bg-pink-600 transition w-full sm:w-auto"
                         >
                             Sign In
                         </button>
                     </div>
-                    <div className="text-center">
+                    <div className="text-center text-sm sm:text-base">
                         <span className="text-gray-600">Don't have an account?</span>{' '}
                         <span
                             className="text-pink-500 cursor-pointer hover:underline"
