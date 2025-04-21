@@ -1,3 +1,4 @@
+import React from "react";
 import { RecipeDetail } from '../types';
 
 interface RecipeModalProps {

@@ -3,6 +3,8 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import Home from './pages/Home';
 import AuthForm from './components/AuthForm';
 import {Recipe, RecipeDetail } from './types';
+import Favorites from "./pages/Favorites.tsx";
+import Navbar from "./components/Navbar.tsx";
 
 const App: React.FC = () => {
     const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
@@ -32,6 +34,11 @@ const App: React.FC = () => {
             return true;
         }
         return false;
+    };
+
+    const handleLogout = () => {
+        localStorage.removeItem('user');
+        setIsAuthenticated(false);
     };
 
     const toggleFavorite = (recipe: Recipe) => {
@@ -64,7 +71,7 @@ const App: React.FC = () => {
 
     return (
         <Router>
-
+            <Navbar onLogout={handleLogout} />
             <Routes>
                 <Route
                     path="/"
@@ -81,7 +88,13 @@ const App: React.FC = () => {
                 <Route
                     path="/favorites"
                     element={
-                       <></>
+                        <Favorites
+                            favorites={favorites}
+                            toggleFavorite={toggleFavorite}
+                            viewRecipeDetails={viewRecipeDetails}
+                            selectedRecipe={selectedRecipe}
+                            setSelectedRecipe={setSelectedRecipe}
+                        />
                     }
                 />
                 <Route path="*" element={<Navigate to="/" />} />

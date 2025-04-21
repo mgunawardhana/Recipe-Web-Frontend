@@ -12,11 +12,11 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe, isFavorite, toggleFavor
     return (
         <div className="bg-gray-100 rounded-lg p-4 text-center">
             <img
-                src={recipe.strMealThumb || 'https://via.placeholder.com/150'} // Fallback image
+                src={recipe.strMealThumb || 'https://via.placeholder.com/150'}
                 alt={recipe.strMeal}
-                className="w-full h-40 rounded-lg mb-2 object-cover" // Match your styling
+                className="w-full h-40 rounded-lg mb-2 object-cover" //
                 onError={(e) => {
-                    e.currentTarget.src = 'https://via.placeholder.com/150'; // Replace broken images
+                    e.currentTarget.src = 'https://via.placeholder.com/150';
                 }}
             />
             <p className="text-sm">Soups</p>
