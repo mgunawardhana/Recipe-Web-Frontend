@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Category, Recipe, RecipeDetail } from '../types';
 import RecipeCard from "../components/RecipeCard.tsx";
 import RecipeModal from "../components/RecipeModal.tsx";
+import {CATEGORIES_ENDPOINT, RECIPES_BY_CATEGORY_ENDPOINT} from "../services/routes/recipeRouting.ts";
+import api from "../services/services.ts";
 
 interface HomeProps {
     favorites: Recipe[];
@@ -23,38 +25,39 @@ const Home: React.FC<HomeProps> = ({
     const [recipes, setRecipes] = useState<Recipe[]>([]);
     const [error, setError] = useState<string | null>(null);
 
+    const fetchCategories = async () => {
+        try {
+            const response = await api.get(CATEGORIES_ENDPOINT + '.php');
+            console.log("Fetched categories:", response.data);
+            const selectedCategories = response.data.categories.slice(0, 5);
+            setCategories(selectedCategories);
+            return response.data;
+        } catch (error) {
+            setError('Error fetching categories');
+            console.error("Error fetching categories:", error);
+            throw error;
+        }
+    };
+
+    const fetchRecipes = async (category: string) => {
+        try {
+            const response = await api.get(`${RECIPES_BY_CATEGORY_ENDPOINT}.php?c=${category}`);
+            console.log("Fetched recipes:", response.data);
+            setRecipes(response.data.meals || []);
+            return response.data;
+        } catch (error) {
+            setError('Error fetching recipes');
+            console.error("Error fetching recipes:", error);
+            throw error;
+        }
+    };
+
     useEffect(() => {
-        const fetchCategories = async () => {
-            try {
-                const response = await fetch('https://www.themealdb.com/api/json/v1/1/categories.php');
-                if (!response.ok) throw new Error('Failed to fetch categories');
-                const data = await response.json();
-                const selectedCategories = data.categories.slice(0, 5);
-                setCategories(selectedCategories);
-            } catch (err) {
-                setError('Error fetching categories');
-                console.error(err);
-            }
-        };
         fetchCategories().then(r => (r));
     }, []);
 
     useEffect(() => {
-        const fetchRecipes = async () => {
-            try {
-                const response = await fetch(
-                    `https://www.themealdb.com/api/json/v1/1/filter.php?c=${selectedCategory}`
-                );
-                if (!response.ok) throw new Error('Failed to fetch recipes');
-                const data = await response.json();
-                console.log('Recipes:', data.meals);
-                setRecipes(data.meals || []);
-            } catch (err) {
-                setError('Error fetching recipes');
-                console.error(err);
-            }
-        };
-        fetchRecipes().then(r => (r));
+        fetchRecipes(selectedCategory).then(r => (r));
     }, [selectedCategory]);
 
     if (error) {
