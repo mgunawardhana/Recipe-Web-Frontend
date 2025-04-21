@@ -14,7 +14,7 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe, isFavorite, toggleFavor
             <img
                 src={recipe.strMealThumb || 'https://via.placeholder.com/150'}
                 alt={recipe.strMeal}
-                className="w-full h-40 rounded-lg mb-2 object-cover" //
+                className="w-full h-40 rounded-lg mb-2 object-cover"
                 onError={(e) => {
                     e.currentTarget.src = 'https://via.placeholder.com/150';
                 }}

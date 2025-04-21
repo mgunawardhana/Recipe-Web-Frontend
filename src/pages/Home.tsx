@@ -71,11 +71,11 @@ const Home: React.FC<HomeProps> = ({
                     <button
                         key={category.idCategory}
                         onClick={() => setSelectedCategory(category.strCategory)}
-                        className={`py-2 px-4 sm:px-6 rounded-full border text-sm sm:text-base md:text-lg ${
+                        className={`py-1.5 px-4 sm:px-6 rounded-full border ${
                             selectedCategory === category.strCategory
-                                ? 'bg-pink-500 text-white'
-                                : 'bg-white text-gray-700 hover:bg-gray-100'
-                        } transition-colors duration-200`}
+                                ? 'bg-pink-500 text-white border-pink-500'
+                                : 'bg-white text-pink-500 border-pink-500 hover:bg-pink-50'
+                        } transition-colors duration-200 text-sm sm:text-base md:text-lg`}
                     >
                         {category.strCategory}
                     </button>

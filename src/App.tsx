@@ -58,14 +58,13 @@ const App: React.FC = () => {
 
     if (!isAuthenticated) {
         return (
-            <div className="flex items-center justify-center min-h-screen bg-gray-100 w-full max-w-2xl mx-auto">
+
                 <AuthForm
                     showRegister={showRegister}
                     setShowRegister={setShowRegister}
                     onLogin={handleLogin}
                     onRegister={handleRegister}
                 />
-            </div>
         );
     }
 
