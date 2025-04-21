@@ -1,54 +1,27 @@
-# React + TypeScript + Vite
+<div align="center">
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+### (★) ɪꜰ ʏᴏᴜ ʜᴀᴠᴇ ᴀɴʏ ʙᴜɢꜱ ᴏʀ ɪꜱꜱᴜᴇꜱ , ɪꜰ ʏᴏᴜ ᴡᴀɴᴛ ᴛᴏ ᴇxᴘʟᴀɪɴ ᴍʏ ᴄᴏᴅᴇ ᴏʀ ɪꜰ ʏᴏᴜ ɴᴇᴇᴅ ʜᴇʟᴘ ᴛᴏ ᴅᴇᴠᴇʟᴏᴘ ʏᴏᴜʀ ᴘʀᴏᴊᴇᴄᴛꜱ ᴘʟᴇᴀꜱᴇ ᴄᴏɴᴛᴀᴄᴛ ᴍᴇ ᴏɴ (★) 👇<br> <br> <br> maneesha.gunawardhana.contact@gmail.com
 
-Currently, two official plugins are available:
+</div>
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+<div align="center">
+ <h3>USED TECHNOLOGIES & TOOLS</h3>
+     <img src="https://skillicons.dev/icons?i=react,ts,tailwind,materialui,webstorm,git,github,netlify" />
 
-## Expanding the ESLint configuration
+</div>
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+<br><br>
+<div align="center">
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+![repo size](https://img.shields.io/github/repo-size/mGunawardhana/Mega-City-Cab-Service-WEB?style=for-the-badge) &nbsp;
+![GitHub](https://img.shields.io/github/license/mGunawardhana/Mega-City-Cab-Service-WEB?style=for-the-badge) &nbsp;
+![GitHub Forks](https://img.shields.io/github/forks/mGunawardhana/Mega-City-Cab-Service-WEB?&labelColor=black&color=f7b731&style=for-the-badge) &nbsp;
+![GitHub Watchers](https://img.shields.io/github/watchers/mGunawardhana/Mega-City-Cab-Service-WEB?style=for-the-badge) &nbsp;
+![GitHub Last Commit](https://img.shields.io/github/last-commit/mGunawardhana/Mega-City-Cab-Service-WEB?style=for-the-badge) &nbsp;
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+</div>
+<br><br>
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+<div align="center">
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
-```
+## © 2025 mGunawardhana. ᴀʟʟ ʀɪɢʜᴛꜱ ʀᴇꜱᴇʀᴠᴇᴅ.
