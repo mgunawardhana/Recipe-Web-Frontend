@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Category, Recipe, RecipeDetail } from '../types';
+import RecipeCard from "../components/RecipeCard.tsx";
+import RecipeModal from "../components/RecipeModal.tsx";
 
 interface HomeProps {
     favorites: Recipe[];
@@ -9,7 +11,13 @@ interface HomeProps {
     setSelectedRecipe: (recipe: RecipeDetail | null) => void;
 }
 
-const Home: React.FC<HomeProps> = () => {
+const Home: React.FC<HomeProps> = ({
+                                       favorites,
+                                       toggleFavorite,
+                                       viewRecipeDetails,
+                                       selectedRecipe,
+                                       setSelectedRecipe,
+                                   }) => {
     const [categories, setCategories] = useState<Category[]>([]);
     const [selectedCategory, setSelectedCategory] = useState<string>('Pork');
     const [recipes, setRecipes] = useState<Recipe[]>([]);
@@ -46,7 +54,7 @@ const Home: React.FC<HomeProps> = () => {
                 console.error(err);
             }
         };
-        fetchRecipes();
+        fetchRecipes().then(r => (r));
     }, [selectedCategory]);
 
     if (error) {
@@ -71,10 +79,17 @@ const Home: React.FC<HomeProps> = () => {
                 ))}
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 sm:gap-6 md:gap-8">
-                {recipes.map(() => (
-                    <h1>Hello</h1>
+                {recipes.map((recipe) => (
+                    <RecipeCard
+                        key={recipe.idMeal}
+                        recipe={recipe}
+                        isFavorite={favorites.some((fav) => fav.idMeal === recipe.idMeal)}
+                        toggleFavorite={toggleFavorite}
+                        viewRecipeDetails={viewRecipeDetails}
+                    />
                 ))}
             </div>
+            <RecipeModal recipe={selectedRecipe} onClose={() => setSelectedRecipe(null)} />
         </div>
     );
 };
