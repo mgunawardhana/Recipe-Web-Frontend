@@ -3,6 +3,8 @@ import TextField from '@mui/material/TextField';
 import InputAdornment from '@mui/material/InputAdornment';
 import {z} from 'zod';
 import {inputBaseClasses} from '@mui/material';
+import api from "../services/services.ts";
+import {LOGIN_ENDPOINT, REGISTER_ENDPOINT} from "../services/routes/recipeRouting.ts";
 
 const loginSchema = z.object({
     email: z.string().email('Invalid email address').min(1, 'Email is required'),
@@ -18,6 +20,56 @@ const registerSchema = loginSchema.extend({
     message: "Passwords don't match", path: ['confirmPassword'],
 });
 
+const handleLogin = async (email: string, password: string) => {
+    try {
+
+        const response = await api.post(LOGIN_ENDPOINT, { email, password });
+
+        console.log("Login attempt:", { email });
+        console.log("Login response:", response.data);
+        console.log(response.data.token);
+
+        if (response.data.token) {
+            localStorage.setItem('token', response.data.token);
+        }
+
+        return response.data;
+    } catch (error) {
+        console.error("Login error:", error);
+        throw error;
+    }
+};
+
+const handleRegister = async (userData: {
+    email: string;
+    password: string;
+    firstName: string;
+    lastName: string;
+    phoneNumber: string;
+}) => {
+    try {
+        const response = await api.post(REGISTER_ENDPOINT, userData);
+
+        console.log("Registration attempt:", {
+            email: userData.email,
+            firstName: userData.firstName,
+            lastName: userData.lastName,
+            phoneNumber: userData.phoneNumber
+        });
+        console.log("Registration response:", response.data);
+
+        if (response.data.token) {
+            localStorage.setItem('token', response.data.token);
+        }
+
+        return response.data;
+    } catch (error) {
+        console.error("Registration error:", error);
+        throw error;
+    }
+};
+
+
 interface AuthFormProps {
     showRegister: boolean;
     setShowRegister: (value: boolean) => void;
@@ -29,6 +81,8 @@ const AuthForm: React.FC<AuthFormProps> = ({showRegister, setShowRegister, onLog
     const [formData, setFormData] = useState({
         email: '', password: '', confirmPassword: '', firstName: '', lastName: '', phoneNumber: '',
     });
+
+    const [, setIsLoading] = useState(false);
     const [errors, setErrors] = useState<Record<string, string>>({});
 
     const handleChange = (field: keyof typeof formData) => (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -38,27 +92,61 @@ const AuthForm: React.FC<AuthFormProps> = ({showRegister, setShowRegister, onLog
         }
     };
 
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
         try {
+
+            setIsLoading(true);
+
             if (showRegister) {
+
                 const result = registerSchema.parse(formData);
-                const success = onRegister(result.email, result.password, result.confirmPassword);
-                if (!success) {
-                    setErrors({confirmPassword: 'Registration failed'});
-                }
+
+                await handleRegister({
+                    email: result.email,
+                    password: result.password,
+                    firstName: result.firstName,
+                    lastName: result.lastName,
+                    phoneNumber: result.phoneNumber
+                });
+
+                onRegister(result.email, result.password, result.confirmPassword);
+
             } else {
+
                 const result = loginSchema.parse(formData);
+
+                console.log("result ",result);
+
+                await handleLogin(result.email, result.password);
+
                 onLogin(result.email, result.password);
             }
+
+            setIsLoading(false);
+
         } catch (error) {
+
+            setIsLoading(false);
+
             if (error instanceof z.ZodError) {
+
                 const fieldErrors: Record<string, string> = {};
                 error.errors.forEach((err) => {
                     if (err.path[0]) {
                         fieldErrors[err.path[0]] = err.message;
                     }
                 });
+
                 setErrors(fieldErrors);
+
+            } else {
+
+                setErrors({
+                    [showRegister ? 'confirmPassword' : 'password']:
+                        'Authentication failed. Please check your credentials.'
+                });
+
+                console.error(showRegister ? "Registration error:" : "Login error:", error);
             }
         }
     };

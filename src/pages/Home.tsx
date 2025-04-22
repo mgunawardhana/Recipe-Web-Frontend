@@ -2,7 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { Category, Recipe, RecipeDetail } from '../types';
 import RecipeCard from "../components/RecipeCard.tsx";
 import RecipeModal from "../components/RecipeModal.tsx";
-import {CATEGORIES_ENDPOINT, RECIPES_BY_CATEGORY_ENDPOINT} from "../services/routes/recipeRouting.ts";
+import {
+    CATEGORIES_ENDPOINT,
+    LIKED_RECIPE_ENDPOINT,
+    RECIPES_BY_CATEGORY_ENDPOINT
+} from "../services/routes/recipeRouting.ts";
 import api from "../services/services.ts";
 
 interface HomeProps {
@@ -27,7 +31,7 @@ const Home: React.FC<HomeProps> = ({
 
     const fetchCategories = async () => {
         try {
-            const response = await api.get(CATEGORIES_ENDPOINT + '.php');
+            const response = await api.get(CATEGORIES_ENDPOINT);
             console.log("Fetched categories:", response.data);
             const selectedCategories = response.data.categories.slice(0, 5);
             setCategories(selectedCategories);
@@ -41,7 +45,7 @@ const Home: React.FC<HomeProps> = ({
 
     const fetchRecipes = async (category: string) => {
         try {
-            const response = await api.get(`${RECIPES_BY_CATEGORY_ENDPOINT}.php?c=${category}`);
+            const response = await api.get(`${RECIPES_BY_CATEGORY_ENDPOINT}${category}`);
             console.log("Fetched recipes:", response.data);
             setRecipes(response.data.meals || []);
             return response.data;
@@ -51,6 +55,23 @@ const Home: React.FC<HomeProps> = ({
             throw error;
         }
     };
+
+    const handleToggleFavorite = async (recipe: Recipe) => {
+        try {
+            const response = await api.post(LIKED_RECIPE_ENDPOINT, {
+                idMeal: recipe.idMeal,
+                strMeal: recipe.strMeal,
+                strMealThumb: recipe.strMealThumb
+            });
+
+            console.log('Recipe like status updated successfully:', response.data);
+
+            toggleFavorite(recipe);
+        } catch (error) {
+            console.error('Error updating recipe like status:', error);
+        }
+    };
+
 
     useEffect(() => {
         fetchCategories().then(r => (r));
@@ -87,7 +108,7 @@ const Home: React.FC<HomeProps> = ({
                         key={recipe.idMeal}
                         recipe={recipe}
                         isFavorite={favorites.some((fav) => fav.idMeal === recipe.idMeal)}
-                        toggleFavorite={toggleFavorite}
+                        toggleFavorite={handleToggleFavorite}
                         viewRecipeDetails={viewRecipeDetails}
                     />
                 ))}
