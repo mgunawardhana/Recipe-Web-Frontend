@@ -81,6 +81,7 @@ const Favorites: React.FC<FavoritesProps> = ({toggleFavorite, viewRecipeDetails,
             {favorites.length === 0 ? (
                 <p className="text-base sm:text-lg md:text-xl">No favorite recipes yet.</p>
             ) : (
+                <div className="max-h-[calc(100vh-200px)] overflow-y-auto">
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 sm:gap-6 md:gap-8">
                     {favorites.map((recipe) => (
                         <RecipeCard
@@ -91,6 +92,7 @@ const Favorites: React.FC<FavoritesProps> = ({toggleFavorite, viewRecipeDetails,
                             viewRecipeDetails={viewRecipeDetails}
                         />
                     ))}
+                </div>
                 </div>
             )}
             <RecipeModal recipe={selectedRecipe} onClose={() => setSelectedRecipe(null)} />
