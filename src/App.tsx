@@ -1,10 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import React, {useEffect, useState} from 'react';
+import {BrowserRouter as Router, Navigate, Route, Routes} from 'react-router-dom';
 import Home from './pages/Home';
 import AuthFormNew from "./components/AuthFormNew.tsx";
-import {Recipe, RecipeDetail } from './types';
+import {Recipe, RecipeDetail} from './types';
 import Favorites from "./pages/Favorites.tsx";
 import Navbar from "./components/Navbar.tsx";
+import api from "./services/services.ts";
+import {FETCH_BY_ID} from "./services/routes/recipeRouting.ts";
 
 const App: React.FC = () => {
     const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
@@ -51,9 +53,18 @@ const App: React.FC = () => {
     };
 
     const viewRecipeDetails = async (recipeId: string) => {
-        const response = await fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${recipeId}`);
-        const data = await response.json();
-        setSelectedRecipe(data.meals[0]);
+        try {
+            const response = await api.get(`${FETCH_BY_ID}${recipeId}`);
+            console.log("fetch by id", response);
+
+            if (response.data && response.data.meal) {
+                setSelectedRecipe(response.data.meal);
+            } else {
+                console.error("No recipe found with that ID");
+            }
+        } catch (error) {
+            console.error("Error fetching recipe details:", error);
+        }
     };
 
     if (!isAuthenticated) {
