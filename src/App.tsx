@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Home from './pages/Home';
-import AuthForm from './components/AuthForm';
+import AuthFormNew from "./components/AuthFormNew.tsx";
 import {Recipe, RecipeDetail } from './types';
 import Favorites from "./pages/Favorites.tsx";
 import Navbar from "./components/Navbar.tsx";
@@ -59,7 +59,7 @@ const App: React.FC = () => {
     if (!isAuthenticated) {
         return (
 
-                <AuthForm
+                <AuthFormNew
                     showRegister={showRegister}
                     setShowRegister={setShowRegister}
                     onLogin={handleLogin}
