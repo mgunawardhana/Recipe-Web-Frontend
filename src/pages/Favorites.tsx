@@ -4,6 +4,7 @@ import { Recipe, RecipeDetail } from '../types';
 import React, {useEffect, useState} from "react";
 import api from "../services/services.ts";
 import {FAVORITE_RECIPES_ENDPOINT, UNLIKE_RECIPE} from "../services/routes/recipeRouting.ts";
+import { toast } from 'react-toastify';
 
 interface FavoritesProps {
     favorites: Recipe[];
@@ -51,6 +52,7 @@ const Favorites: React.FC<FavoritesProps> = ({toggleFavorite, viewRecipeDetails,
                 prevFavorites.filter(recipe => recipe.idMeal !== recipeId)
             );
 
+            toast.success(`Recipe ${recipeId} removed from favorites`);
             console.log(`Recipe ${recipeId} removed from favorites`);
         } catch (error) {
             setError('Error removing recipe from favorites');

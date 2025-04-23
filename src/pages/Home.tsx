@@ -8,6 +8,7 @@ import {
     RECIPES_BY_CATEGORY_ENDPOINT
 } from "../services/routes/recipeRouting.ts";
 import api from "../services/services.ts";
+import { toast } from 'react-toastify';
 
 interface HomeProps {
     favorites: Recipe[];
@@ -64,10 +65,12 @@ const Home: React.FC<HomeProps> = ({
                 strMealThumb: recipe.strMealThumb
             });
 
+            toast.success(`Recipe ${recipe.strMeal} added to favorites`);
             console.log('Recipe like status updated successfully:', response.data);
 
             toggleFavorite(recipe);
         } catch (error) {
+            toast.error("Error updating recipe status");
             console.error('Error updating recipe like status:', error);
         }
     };

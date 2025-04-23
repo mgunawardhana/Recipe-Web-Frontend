@@ -5,6 +5,8 @@ import { z } from 'zod';
 import { inputBaseClasses } from '@mui/material';
 import api from "../services/services.ts";
 import { LOGIN_ENDPOINT, REGISTER_ENDPOINT } from "../services/routes/recipeRouting.ts";
+import { toast } from 'react-toastify';
+
 
 const loginSchema = z.object({
     email: z.string().email('Invalid email address').min(1, 'Email is required'),
@@ -104,10 +106,12 @@ const AuthForm: React.FC<AuthFormProps> = ({ showRegister, setShowRegister, onLo
                     lastName: result.lastName,
                     phoneNumber: result.phoneNumber
                 });
+                toast.success("Registration successful!");
                 onRegister(result.email, result.password, result.confirmPassword);
             } else {
                 const result = loginSchema.parse(formData);
                 await handleLogin(result.email, result.password);
+                toast.success("Login successful!");
                 onLogin(result.email, result.password);
             }
             setIsLoading(false);
@@ -121,11 +125,14 @@ const AuthForm: React.FC<AuthFormProps> = ({ showRegister, setShowRegister, onLo
                     }
                 });
                 setErrors(fieldErrors);
+                toast.error('Login Error!');
             } else {
                 setErrors({
                     [showRegister ? 'confirmPassword' : 'password']:
                         'Authentication failed. Please check your credentials.'
                 });
+                toast.error('Login Error!');
+
                 console.error(showRegister ? "Registration error:" : "Login error:", error);
             }
         }
