@@ -7,6 +7,12 @@ interface NavbarProps {
 }
 
 const Navbar: React.FC<NavbarProps> = ({ onLogout }) => {
+
+        const handleLogout = () => {
+            localStorage.removeItem('token');
+            onLogout();
+        };
+
     return (
         <nav className="flex justify-between items-center p-4 bg-white shadow">
             <div className="flex-1">
@@ -28,7 +34,7 @@ const Navbar: React.FC<NavbarProps> = ({ onLogout }) => {
 
             <div className="flex-1 flex justify-end">
                 <button
-                    onClick={onLogout}
+                    onClick={handleLogout}
                     className="text-gray-700 hover:text-pink-500"
                     aria-label="Logout"
                 >

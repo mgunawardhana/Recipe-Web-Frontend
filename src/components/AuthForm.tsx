@@ -14,8 +14,16 @@ const loginSchema = z.object({
 const registerSchema = loginSchema.extend({
     firstName: z.string().min(1, 'First name is required'),
     lastName: z.string().min(1, 'Last name is required'),
-    phoneNumber: z.string().regex(/^\+?[\d\s-]{10,}$/, 'Invalid phone number'),
+    email: z.string().email('Invalid email address').min(1, 'Email is required'),
+    password: z.string().min(8, 'Password must be at least 8 characters'),
     confirmPassword: z.string().min(8, 'Password must be at least 8 characters'),
+    phoneNumber: z.string().regex(/^\+?[\d\s-]{10,}$/, 'Invalid phone number'),
+    address: z.string().optional(),
+    city: z.string().optional(),
+    state: z.string().optional(),
+    zip: z.string().optional(),
+    country: z.string().optional(),
+    age: z.number().optional(),
 }).refine((data) => data.password === data.confirmPassword, {
     message: "Passwords don't match", path: ['confirmPassword'],
 });
@@ -41,20 +49,33 @@ const handleLogin = async (email: string, password: string) => {
 };
 
 const handleRegister = async (userData: {
-    email: string;
-    password: string;
     firstName: string;
     lastName: string;
+    email: string;
+    password: string;
     phoneNumber: string;
 }) => {
     try {
-        const response = await api.post(REGISTER_ENDPOINT, userData);
+        const apiPayload = {
+            name: `${userData.firstName} ${userData.lastName}`,
+            email: userData.email,
+            password: userData.password,
+            phone: userData.phoneNumber,
+            address: "",
+            city: "",
+            state: "",
+            zip: "",
+            country: "",
+            age: 0
+        };
+
+        console.log("Registration payload:", apiPayload);
+        const response = await api.post(REGISTER_ENDPOINT, apiPayload);
 
         console.log("Registration attempt:", {
             email: userData.email,
-            firstName: userData.firstName,
-            lastName: userData.lastName,
-            phoneNumber: userData.phoneNumber
+            name: apiPayload.name,
+            phone: userData.phoneNumber
         });
         console.log("Registration response:", response.data);
 
@@ -68,6 +89,7 @@ const handleRegister = async (userData: {
         throw error;
     }
 };
+
 
 
 interface AuthFormProps {
