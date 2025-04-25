@@ -4,8 +4,7 @@ import RecipeCard from "../components/RecipeCard.tsx";
 import RecipeModal from "../components/RecipeModal.tsx";
 import {
     CATEGORIES_ENDPOINT,
-    LIKED_RECIPE_ENDPOINT,
-    RECIPES_BY_CATEGORY_ENDPOINT
+    RECIPES_BY_CATEGORY_ENDPOINT, TOGGLE_RECIPE
 } from "../services/routes/recipeRouting.ts";
 import api from "../services/services.ts";
 import { toast } from 'react-toastify';
@@ -59,12 +58,7 @@ const Home: React.FC<HomeProps> = ({
 
     const handleToggleFavorite = async (recipe: Recipe) => {
         try {
-            const response = await api.post(LIKED_RECIPE_ENDPOINT, {
-                idMeal: recipe.idMeal,
-                strMeal: recipe.strMeal,
-                strMealThumb: recipe.strMealThumb
-            });
-
+            const response = await api.get(`${TOGGLE_RECIPE}${recipe.idMeal}`);
             toast.success(`Recipe ${recipe.strMeal} added to favorites`);
             console.log('Recipe like status updated successfully:', response.data);
 

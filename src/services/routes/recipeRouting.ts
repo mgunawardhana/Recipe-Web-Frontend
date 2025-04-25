@@ -6,3 +6,4 @@ export const LIKED_RECIPE_ENDPOINT = "recipes/like";
 export const FAVORITE_RECIPES_ENDPOINT = "recipes/liked";
 export const UNLIKE_RECIPE = "recipes/unlike";
 export const FETCH_BY_ID = "recipes/details/";
+export const TOGGLE_RECIPE = "recipes/favorite/";
