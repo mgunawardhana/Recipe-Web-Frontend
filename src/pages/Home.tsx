@@ -4,7 +4,8 @@ import RecipeCard from "../components/RecipeCard.tsx";
 import RecipeModal from "../components/RecipeModal.tsx";
 import {
     CATEGORIES_ENDPOINT,
-    RECIPES_BY_CATEGORY_ENDPOINT, TOGGLE_RECIPE
+    LIKED_RECIPE_ENDPOINT,
+    RECIPES_BY_CATEGORY_ENDPOINT
 } from "../services/routes/recipeRouting.ts";
 import api from "../services/services.ts";
 import { toast } from 'react-toastify';
@@ -58,14 +59,40 @@ const Home: React.FC<HomeProps> = ({
 
     const handleToggleFavorite = async (recipe: Recipe) => {
         try {
-            const response = await api.patch(`${TOGGLE_RECIPE}${recipe.idMeal}`);
-            toast.success(`Recipe ${recipe.strMeal} added to favorites`);
-            console.log('Recipe like status updated successfully:', response.data);
 
-            toggleFavorite(recipe);
-        } catch (error) {
-            toast.error("Error updating recipe status");
-            console.error('Error updating recipe like status:', error);
+            const response = await api.post(LIKED_RECIPE_ENDPOINT, {
+                idMeal: recipe.idMeal,
+                strMeal: recipe.strMeal,
+                strMealThumb: recipe.strMealThumb
+            });
+
+            if (response.data?.message === "Recipe liked successfully") {
+                toast.success(`${recipe.strMeal} added to favorites`);
+                toggleFavorite(recipe);
+            }
+
+            else if (response.data?.message === "Recipe already liked") {
+                toast.info(`${recipe.strMeal} is already in your favorites`);
+            }
+
+            else {
+                toast.success(`Favorite status updated for ${recipe.strMeal}`);
+                toggleFavorite(recipe);
+            }
+        } catch (error: never) {
+            const errorMessage = error.response?.data?.message || "Error updating favorite status";
+
+            if (error.response?.status === 401) {
+                toast.error("Please log in to save favorites");
+            } else if (error.response?.status === 404) {
+                toast.error("Recipe not found");
+            } else if (error.response?.status === 429) {
+                toast.error("Too many requests. Please try again later");
+            } else {
+                toast.error(errorMessage);
+            }
+
+            console.error('Error updating recipe favorite status:', error);
         }
     };
 
