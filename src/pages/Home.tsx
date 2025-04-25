@@ -58,7 +58,7 @@ const Home: React.FC<HomeProps> = ({
 
     const handleToggleFavorite = async (recipe: Recipe) => {
         try {
-            const response = await api.get(`${TOGGLE_RECIPE}${recipe.idMeal}`);
+            const response = await api.patch(`${TOGGLE_RECIPE}${recipe.idMeal}`);
             toast.success(`Recipe ${recipe.strMeal} added to favorites`);
             console.log('Recipe like status updated successfully:', response.data);
 
